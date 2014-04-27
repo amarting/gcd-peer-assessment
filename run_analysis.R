@@ -57,22 +57,19 @@ re <- "(-mean\\(\\)|-std\\(\\))"
 data.msd <- data.aggr[, grepl(re, colnames(data.aggr))]
 data.msd <- cbind(data.aggr[, c("subject", "activity")], data.msd)
 
-message("Writing tidy data...")
-write.table(data.aggr, file = "../har-aggregated.data", row.names = F)
-message("har-aggregated.data\n")
+message("Writing aggregated data...")
+write.table(data.aggr, file = "../har-aggregated.txt", row.names = F)
+message("har-aggregated.txt\n")
 
 message("Writing data set with mean and standard deviation...")
-write.table(data.msd, file = "../har-only-mean-std.data", row.names = F)
-message("har-only-mean-std.data\n")
+write.table(data.msd, file = "../har-only-mean-std.txt", row.names = F)
+message("har-only-mean-std.txt\n")
 
 ## data.ind  - independent tidy data set with the average
 ## of each variable for each activity and each subject
-data.melt <- melt(data.aggr, id = c("subject", "activity"))
+data.melt <- melt(data.msd, id = c("subject", "activity"))
 data.ind <- acast(data.melt, subject + activity ~ variable, mean)
 
 message("Writing the independent data set...")
-write.table(data.ind, file = "../har-independent.data")
-message("har-independent.data\n")
-
-
-
+write.table(data.ind, file = "../har-independent.txt")
+message("har-independent.txt\n")
