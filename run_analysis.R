@@ -24,13 +24,13 @@ activity.lbls <- read.table("activity_labels.txt", colClasses = rep("character",
 colnames(activity.lbls) <- c("id", "name")
 map.activity <- function(i) activity.lbls[i, ]$name
 
-read.HAR <- function(type) {
-    if (!file.exists(paste(type, "/", sep = "")))
+read.HAR <- function(src) {
+    if (!file.exists(paste(src, "/", sep = "")))
         return(NULL)
     
-    y.file <- paste(type, "/y_", type, ".txt", sep = "")
-    x.file <- paste(type, "/X_", type, ".txt", sep = "")
-    subject.file <- paste(type, "/subject_", type, ".txt", sep = "")
+    y.file <- paste(src, "/y_", src, ".txt", sep = "")
+    x.file <- paste(src, "/X_", src, ".txt", sep = "")
+    subject.file <- paste(src, "/subject_", src, ".txt", sep = "")
     
     y <- read.table(y.file, col.names = "activity", colClasses = "character")
     y <- mutate(y, activity = map.activity(activity))
@@ -41,7 +41,8 @@ read.HAR <- function(type) {
     x <- read.table(x.file, colClasses = "numeric")
     colnames(x) <- features.names$name
     
-    cbind(obj, x)
+    obj <- cbind(obj, x)
+    obj[, unique(colnames(obj))]
 }
 
 
@@ -51,7 +52,7 @@ train <- read.HAR("train")
 message("Done\n")
 
 ## data.aggr - the aggregate of test and train data frames
-data.aggr <- rbind(train, test)
+data.aggr <- merge(train, test, all = T)
 
 re <- "(-mean\\(\\)|-std\\(\\))"
 
