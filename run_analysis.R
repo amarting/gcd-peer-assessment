@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 require(plyr)
 require(reshape2)
 
@@ -67,7 +69,7 @@ message("har-only-mean-std.txt\n")
 
 ## data.ind  - independent tidy data set with the average
 ## of each variable for each activity and each subject
-data.melt <- melt(data.msd, id = c("subject", "activity"))
+data.melt <- melt(data.aggr, id = c("subject", "activity"))
 data.ind <- acast(data.melt, subject + activity ~ variable, mean)
 
 message("Writing the independent data set...")
