@@ -1,0 +1,5 @@
+UCI HAR Dataset/
+har-aggregated.txt
+har-independent.txt
+har-only-mean-std.txt
+har.zip
